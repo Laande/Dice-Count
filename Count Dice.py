@@ -13,16 +13,6 @@ ext = Extension(extension_info, sys.argv)
 ext.start()
 
 
-def on_connection_start():
-    print('Connected with: {}:{}'.format(ext.connection_info['host'], ext.connection_info['port']))
-    if ext.harble_api:
-        print("Harble API :" + ext.harble_api)
-    else:
-        print("No Harble API detected")
-
-
-ext.on_event('connection_start', on_connection_start)
-
 cata_dice = ["886735784", "284", "886738926", "886732682"]
 
 """
@@ -52,7 +42,6 @@ around = []
 
 def dice_moove(message):
     global count
-    # {l}{h:3776}{i:341445185}{i:886732682}{i:6}{i:5}{i:0}{s:"0.0"}{s:"1.0"}{i:1}{i:0}{s:"0"}{i:-1}{i:1}{i:1257657231}
     (_, idd, x, y, _, _, _, _, _, etat, _, _, _) = message.packet.read("iiiiissiisiii")
     idd = str(idd)
     if idd in cata_dice:
@@ -97,7 +86,6 @@ def speech(message):
 
 def room_change(message):
     around.clear()
-    print("room changed")
 
 
 ext.intercept(Direction.TO_CLIENT, dice_moove, 3776)
